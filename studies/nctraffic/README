@@ -1,0 +1,10 @@
+start postgresql database using
+psql traffic_stops_nc -h localhost -U along528
+
+the available tables are
+nc_person
+nc_stop
+nc_contraband
+nc_search
+
+plus some others
