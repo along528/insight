@@ -4,7 +4,9 @@ http://www.icpsr.umich.edu/icpsrweb/NACJD/studies/31161/version/1
 
 You will have to specify the path of the downloaded dataset
 The dataset is provided as a tab-separated-value (.tsv) format along with some others.
-The script tsv_to_csv.py does the proper conversion to the .csv format.
+I tried to convert this myself but that failed miserably for some reason.
+The best way seems to be to open the tsv in LibreOffice, use just tab delimiters and then save as a .csv.
+The script tsv_to_csv.py tries do to do the the proper conversion to the .csv format but fails
 
 You can build the database assuming you have the data by using
 police_bjs_build.ipynb
