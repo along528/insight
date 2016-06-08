@@ -9,7 +9,7 @@ from a_Model import ModelIt
 
 user = 'along528' #add your username here (same as previous postgreSQL)                      
 host = 'localhost'
-dbname = 'birth_db'
+dbname = 'traffic_police_combined'
 db = create_engine('postgres://%s%s/%s'%(user,host,dbname))
 con = None
 con = psycopg2.connect(database = dbname, user = user)
@@ -21,28 +21,16 @@ def index():
        title = 'Home', user = { 'nickname': 'Miguel' },
        )
 
-@app.route('/db')
-def birth_page():
-    sql_query = """                                                                       
-                SELECT * FROM birth_data_table WHERE delivery_method='Cesarean';          
-                """
-    query_results = pd.read_sql_query(sql_query,con)
-    births = ""
-    for i in range(0,10):
-        births += query_results.iloc[i]['birth_month']
-        births += "<br>"
-    return births
- 
 @app.route('/db_fancy')
-def cesareans_page_fancy():
+def db_page_fancy():
     sql_query = """
-               SELECT index, attendant, birth_month FROM birth_data_table WHERE delivery_method='Cesarean';
+                SELECT agency,zipcode,year,white,black,rpsi FROM combined_rpsi_searches_over_stops_black_over_white WHERE year = 2006;          
                 """
     query_results=pd.read_sql_query(sql_query,con)
-    births = []
+    agencies = []
     for i in range(0,query_results.shape[0]):
-        births.append(dict(index=query_results.iloc[i]['index'], attendant=query_results.iloc[i]['attendant'], birth_month=query_results.iloc[i]['birth_month']))
-    return render_template('cesareans.html',births=births)
+        agencies.append(dict(agency=query_results.iloc[i]['agency'], zipcode=query_results.iloc[i]['zipcode'], rpsi=query_results.iloc[i]['rpsi']))
+    return render_template('rpsi_db.html',agencies=agencies)
  
 @app.route('/input')
 def cesareans_input():
