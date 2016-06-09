@@ -5,7 +5,8 @@ from sqlalchemy_utils import database_exists, create_database
 import pandas as pd
 import psycopg2
 from flask import request
-from a_Model import ModelIt
+import ridge_regression
+from os import sys
 
 user = 'along528' #add your username here (same as previous postgreSQL)                      
 host = 'localhost'
@@ -48,8 +49,8 @@ def db_page_fancy():
 def input():
     return render_template("input.html")
 
-@app.route('/output')
-def output():
+@app.route('/output_old')
+def output_old():
   agency = request.args.get('agency')
   query = "SELECT agency,zipcode,year,white,black,rpsi \
   	   FROM combined_rpsi_searches_over_stops_black_over_white \
@@ -57,3 +58,17 @@ def output():
   results=get_html(clean_df(pd.read_sql_query(query,con)))
   #the_result = ModelIt(patient,births)
   return render_template("output.html", policing_db = results)
+
+@app.route('/output')
+def output():
+  agency = request.args.get('agency')
+  query = "SELECT * \
+  	   FROM survey_features \
+	   WHERE (agency LIKE '%"+agency.upper()+"%');" 
+  features=pd.read_sql_query(query,con)
+  results = ridge_regression.prediction(features)
+  results = clean_df(results)
+  results_html=get_html(results[['Agency','City','State','Zipcode', 
+                                 'Population','White','Black','RPSI']])
+  #the_result = ModelIt(patient,births)
+  return render_template("output.html", policing_db = results_html)
