@@ -51,7 +51,9 @@ def input():
 @app.route('/output')
 def output():
   agency = request.args.get('agency')
-  query = "SELECT agency,zipcode,year,white,black,rpsi FROM combined_rpsi_searches_over_stops_black_over_white WHERE year = 2006 AND (agency LIKE '%"+agency.upper()+"%');" 
+  query = "SELECT agency,zipcode,year,white,black,rpsi \
+  	   FROM combined_rpsi_searches_over_stops_black_over_white \
+	   WHERE year = 2006 AND (agency LIKE '%"+agency.upper()+"%');" 
   results=get_html(clean_df(pd.read_sql_query(query,con)))
   #the_result = ModelIt(patient,births)
   return render_template("output.html", policing_db = results)
