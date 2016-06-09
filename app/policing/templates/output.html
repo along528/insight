@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>Racial Profiling Susceptibility Index</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
@@ -35,57 +35,24 @@
   <body>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-    <div class="starter-template">
-        <h2>Output Page</h2>
-        <p>Enter some user input</p>
-    </div>
-
-    <div class = "container">
-
-      <form  action="/output" method="GET">
-        <div class="form-group">
-          <label for="birth_month">Birth Month:</label>
-          <input type="text" id="birth_month" name='birth_month' placeholder="e.g. ">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Racial Profiling Susceptibility</a>
         </div>
-        <div>
-          <button type="submit" class="btn btn-default btn-lg">Find these Cesareans!</button>
-        </div>
-      </form>
-    </div>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
-
-  </div> <!-- /.container-->
-
-    <div class="container">
-      <div class="starter-template">
-        <h3>Results:</h3>
-        <p class="lead">Below is the result of your query.<br> You just took user input and looked up the information. Now we need to expand the functionality!</p>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
       </div>
-
-     <table class="table table-hover">
-      <tr><th>index</th><th>Attendant</th><th>Birth Month</th></tr>
-      {% for birth in births %}
-      <tr><td>{{ birth['index'] }}</td><td>{{ birth['attendant']}}</td><td> {{ birth['birth_month'] }}</td></tr>
-      {% endfor %}
-      </table> 
-
-
-     </div><!-- /.container -->
-
-    <div class="container">
-      <div class="starter-template">
-        <h3>Another Result:</h3>
-        <p class="lead">Now we've taken the input and called a function from your package.<br>The result is {{the_result}}</p>
-      </div>
-
-
-      <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-      <script src="static/js/bootstrap.min.js"></script>
-
-
-     </div><!-- /.container -->
     </nav>
 
 <br><br>
@@ -93,18 +60,27 @@
     <div class="container">
 
       <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+        <h1>Racial Profiling in Police Departments</h1>
+        <p class="lead">Predicting indicators of racial profiling in police departments<br>using the Racial Profiling Susceptibility Index (RPSI)</p>
       </div>
 
-    </div><!-- /.container -->
+        <form  action="/output" method="GET">
+        <div class="form-group">
+          <label for="agency">Police Department:</label>
+          <input type="text" id="agency" name='agency' placeholder="e.g. Raleigh Police Department">
+        </div>
 
-<!-- <table class="table table-hover"> 
-<tr><th>index</th><th>Attendant</th><th>birth_month</th></tr> 
-{% for birth in births %} 
-<tr><td>{{ birth['index'] }}</td><td>{{ birth['attendant']}}</td><td> {{ birth['birth_month'] }}</td></tr> 
-{% endfor %} 
-</table>  -->
+        <div>
+          <button type="submit" class="btn btn-default btn-lg">Find Department</button>
+        </div>
+
+      </form>
+
+    <br>
+    <!-- output table -->
+    {{ policing_db | safe }}
+
+    </div><!-- /.container -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script> 
 <script src="static/js/bootstrap.min.js"></script> 
 
