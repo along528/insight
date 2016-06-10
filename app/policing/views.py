@@ -68,7 +68,10 @@ def output():
   features=pd.read_sql_query(query,con)
   results = ridge_regression.prediction(features)
   results = clean_df(results)
-  results_html=get_html(results[['Agency','City','State','Zipcode', 
-                                 'Population','White','Black','RPSI']])
+  results = results[['Agency','City','State','Zipcode', 'Population','White','Black','Racialprplcy','RPSI']]
+  results['Racial Profiling Policy?'] = results['Racialprplcy'].map(lambda x: "Yes" if x==1 else "No") 
+  results = results[['Agency','City','State','Zipcode', 'Population','White','Black','Racial Profiling Policy?','RPSI']]
+  results.rename(columns={'Black':'Fraction of Black Officers','White':'Fraction of White Officers'}, inplace=True)
+  results_html=get_html(results)
   #the_result = ModelIt(patient,births)
   return render_template("output.html", policing_db = results_html)

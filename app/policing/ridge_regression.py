@@ -6,6 +6,19 @@ scaler = pickle.load(open(pickle_directory+"scaler.p","rb"))
 
 import munging
 
+from sqlalchemy import create_engine
+from sqlalchemy_utils import database_exists, create_database
+import psycopg2
+
+dbname = 'traffic_police_combined'
+username = 'along528'
+pswd = 'password'
+## 'engine' is a connection to a database
+## Here, we're using postgres, but sqlalchemy can connect to other things too.
+engine = create_engine('postgresql://%s:%s@localhost/%s'%(username,pswd,dbname))
+print engine.url
+
+
 
 def prediction(features):
 	#will this remove some police departemtns
@@ -17,6 +30,7 @@ def prediction(features):
 	y = model.predict(X)
 	features['RPSI'] = y
 	output = pd.concat([metadata,features],axis=1)
+	#output.to_sql('prediction',engine,if_exists='replace')
 	return output
 
 
