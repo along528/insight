@@ -178,6 +178,8 @@
 2233,6447.0,Marlborough,Connecticut,CT,Hartford,41.6412,-72.4609,-1.0
 2237,6455.0,Middlefield,Connecticut,CT,Middlesex,41.5168,-72.7186,-1.0
 2238,6456.0,Middle Haddam,Connecticut,CT,Middlesex,41.538,-72.5252,-1.0
+2239,6457.0,Middletown,Connecticut,CT,Middlesex,41.5569,-72.6652,-1.0
+2240,6459.0,Middletown,Connecticut,CT,Middlesex,41.5565,-72.6582,-1.0
 2244,6467.0,Milldale,Connecticut,CT,Hartford,41.5657,-72.9037,-1.0
 2245,6468.0,Monroe,Connecticut,CT,Fairfield,41.3312,-73.2243,-1.0
 2246,6469.0,Moodus,Connecticut,CT,Middlesex,41.5078,-72.4419,-1.0
@@ -1015,6 +1017,7 @@
 26968,60013.0,Cary,Illinois,IL,McHenry,42.2196,-88.2426,-1.0
 26971,60016.0,Des Plaines,Illinois,IL,Cook,42.0467,-87.8859,-1.0
 26972,60017.0,Des Plaines,Illinois,IL,Cook,42.0288,-87.8944,-1.0
+26973,60018.0,Rosemont,Illinois,IL,Cook,42.0155,-87.8687,-1.0
 26974,60019.0,Des Plaines,Illinois,IL,Cook,42.0243,-87.9071,-1.0
 26975,60020.0,Fox Lake,Illinois,IL,Lake,42.3937,-88.1648,-1.0
 26976,60021.0,Fox River Grove,Illinois,IL,McHenry,42.1936,-88.2205,-1.0
@@ -1105,6 +1108,7 @@
 27110,60172.0,Roselle,Illinois,IL,DuPage,41.9798,-88.0857,-1.0
 27112,60174.0,Saint Charles,Illinois,IL,Kane,41.9194,-88.307,-1.0
 27113,60175.0,Saint Charles,Illinois,IL,Kane,41.9478,-88.3918,-1.0
+27114,60176.0,Rosemont,Illinois,IL,Cook,41.9563,-87.8692,-1.0
 27115,60177.0,South Elgin,Illinois,IL,Kane,41.9969,-88.2986,-1.0
 27116,60178.0,Sycamore,Illinois,IL,DeKalb,41.9911,-88.6928,-1.0
 27117,60179.0,Hoffman Estates,Illinois,IL,Cook,42.0793,-88.2237,-1.0
