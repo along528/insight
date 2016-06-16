@@ -1,0 +1,85 @@
+best features after recursive_feature_elimination using logistic regression
+when categorized as 
+def categorize(rpsi):
+    if rpsi >=0 and rpsi <=1:
+        return 0
+    elif rpsi > 1 and rpsi <= 2.2:
+        return 1
+    else: return 2
+
+75
+institutionalized_juvenile_white
+swnptemp
+ftreserveswn
+ftgangoff
+ptgangoff
+numjail
+numcrtsec
+totfield
+totinsrv
+asian
+nathaw
+amerind
+chiefmin
+numplanes
+numboats
+nummobcam
+urban_per_capita
+rural_per_capita
+institutionalized_all_per_capita
+institutionalized_white_per_capita
+institutionalized_adult_local_jail_white_per_capita
+institutionalized_juvenile_white_per_capita
+institutionalized_adult_federal_detention_black_per_capita
+institutionalized_adult_federal_prison_black_per_capita
+institutionalized_adult_state_prison_black_per_capita
+institutionalized_adult_local_jail_black_per_capita
+institutionalized_juvenile_black_per_capita
+population_white_per_capita
+population_black_per_capita
+total_income_estimate_all_per_capita
+swnauthemp_per_capita
+totptemp_per_capita
+ptreserveswn_per_capita
+ptreserveciv_per_capita
+ptgangoff_per_capita
+ftdrugoff_per_capita
+ptdrugoff_per_capita
+ftterroff_per_capita
+pterroff_per_capita
+fthumtrfoff_per_capita
+numcpo_per_capita
+numsro_per_capita
+numpatr_per_capita
+numinvst_per_capita
+opbudget_per_capita
+totacad_per_capita
+totinsrv_per_capita
+white_per_capita
+black_per_capita
+asian_per_capita
+nathaw_per_capita
+female_per_capita
+totgender_per_capita
+chiefmin_per_capita
+sgtmin_per_capita
+sgtmax_per_capita
+entrymin_per_capita
+entrymax_per_capita
+nummrkcars_per_capita
+numumkcars_per_capita
+numothunm_per_capita
+numplanes_per_capita
+numcopters_per_capita
+nummotor_per_capita
+numcarcam_per_capita
+numfixcam_per_capita
+nummobcam_per_capita
+population_per_capita
+black_over_white_population_disparity
+black_over_white_income_disparity
+black_over_white_institutionalized_disparity
+black_over_white_institutionalized_adult_federal_prison_disparity
+black_over_white_institutionalized_adult_state_prison_disparity
+black_over_white_institutionalized_adult_local_jail_disparity
+black_officer_disparity
