@@ -61,7 +61,8 @@
 
       <div class="starter-template">
         <h1>Racial Profiling in Police Departments</h1>
-        <p class="lead">Predicting indicators of racial profiling in police departments<br>using the Racial Profiling Susceptibility Index (RPSI)</p>
+        <p class="lead">Predicting indicators of racial profiling in police departments</p> 
+	<!--<br>using the Racial Profiling Susceptibility Index (RPSI)</p>-->
       </div>
 
         <form  action="/output" method="GET">
@@ -77,8 +78,26 @@
       </form>
 
     <br>
+    <h2>{{agency | safe}}</h2>   {{city | safe}}, {{state | safe}}
+    <br>
+    <br>
+    <p><big>
+    The {{agency | safe}} is <b>{{moreorless | safe}} SUSCEPTIBLE</b> to racial profiling with 
+    black drivers being {{rpsi | safe}} times {{inequality | safe}} likely to be searched than white drivers. 
+    </big>
+    </p>
+
+    <h3>Features related to racial profiling</h3>
+    <p>
+    By looking at surveys of your police department and the community it serves and comparing this to data on other departments nationally, 
+    some criteria have been found to be associated with racial profiling. These are given below
+    </p>
+    <p>
+    {{ descriptor | safe}}
+    </p>
+
     <!-- output table -->
-    {{ policing_db | safe }}
+    <!--{{ policing_db | safe }}-->
 
     </div><!-- /.container -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script> 
