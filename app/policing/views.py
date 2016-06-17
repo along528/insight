@@ -97,8 +97,8 @@ def output():
   #results_html=get_html(results)
   rpsi = results_series['rpsi']
   moreorless = 'LESS'
-  if rpsi > 1 and rpsi<2: moreorless = 'MORE'
-  elif rpsi > 2: moreorless = 'VERY'
+  if rpsi > 1.3 and rpsi<2.5: moreorless = 'MORE'
+  elif rpsi > 2.5: moreorless = 'VERY'
 
   inequality = "equal"
   if rpsi > 1: inequality = "more"
