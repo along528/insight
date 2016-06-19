@@ -1,20 +1,10 @@
 from flask import render_template
 from policing import app
-from sqlalchemy import create_engine
-from sqlalchemy_utils import database_exists, create_database
 import pandas as pd
-import psycopg2
 from flask import request
-import ridge_regression
 from os import sys
 from collections import OrderedDict
 
-user = 'along528' #add your username here (same as previous postgreSQL)                      
-host = 'localhost'
-dbname = 'combined_profiling'
-db = create_engine('postgres://%s%s/%s'%(user,host,dbname))
-con = None
-con = psycopg2.connect(database = dbname, user = user)
 
 def clean_df(results):
     results['agency'] = results['agency'].str.title()
@@ -30,6 +20,7 @@ def get_html(results):
     return results.to_html(index=False).replace("dataframe",
 					       "table table-hover")
 
+data = pd.read_csv('app_db.csv')
 
 
  
@@ -46,36 +37,45 @@ def output():
   query = "SELECT * \
   	   FROM app_db \
 	   WHERE (agency LIKE '%"+agency.title()+"%');" 
-  results=pd.read_sql_query(query,con)
+  results=data[data['agency'].str.contains(agency.title())]
   results = results.sort(columns=['population'],ascending=False).reset_index()
   results = results[results.index==0]
   features = results.drop(['index','surveyid','agency','city','state','zipcode'],axis=1)
 
   results_series = results.ix[0,:]
-  #results = ridge_regression.prediction(features)
   #results = clean_df(results)
   #results = results[['Agency','City','State','Zipcode', 'Population','White','Black','Racialprplcy','RPSI']]
   #results['Racial Profiling Policy?'] = results['Racialprplcy'].map(lambda x: "Yes" if x==1 else "No") 
   #results = results[['Agency','City','State','Zipcode', 'Population','White','Black','Racial Profiling Policy?','RPSI']]
   #results.rename(columns={'Black':'Fraction of Black Officers','White':'Fraction of White Officers'}, inplace=True)
   #results_html=get_html(results)
-  rpsi = results_series['rpsi']
-  moreorless = 'LESS'
-  if rpsi > 1.3 and rpsi<2.5: moreorless = 'MORE'
-  elif rpsi > 2.5: moreorless = 'VERY'
+  rpsi = -1
+  if results_series['is_measured']:
+	  rpsi = results_series['rpsi']
+	  moreorless = 'LESS'
+	  if rpsi > 1.3 and rpsi<2.5: moreorless = 'MORE'
+	  elif rpsi > 2.5: moreorless = 'VERY'
+  else:
+          rpsi = results_series['rpsi_predicted']
+	  moreorless = 'LESS'
+	  if rpsi == 1: moreorless = 'MORE'
+	  elif rpsi == 2: moreorless = 'VERY'
+
 
   inequality = "equal"
   if rpsi > 1: inequality = "more"
   if rpsi < 1: inequality = "less"
 
+  summary = ""
+  summary = 'The '+results_series['agency']+' is <b>'+moreorless+' SUSCEPTIBLE</b> to racial profiling '
+  if results_series['is_measured']:
+      summary +='with black drivers being %3.1f %s times likely to be searched than white drivers.' % (rpsi,inequality)
+  else:
+      summary+=' according to predictions comparing it to similar police departments where traffic stop information is available.'
   test = {}
   test['blah'] = 'woot'
 
-  query = "SELECT * \
-  	   FROM app_db;"
-  results_all=pd.read_sql_query(query,con)
-
-  average = results_all.mean()
+  average = data.mean()
 
   featuremap = OrderedDict()
   featuremap['entrymin'] = 'Minimum Officer Salary'
@@ -119,4 +119,5 @@ def output():
 		descriptor=descriptor,
 		moreorless=moreorless,
 		inequality=inequality,
+		summary=summary,
   		policing_db = results_html)

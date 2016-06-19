@@ -83,7 +83,7 @@
         <div class="form-group">
 	  <p class="intro-text-small">Enter your Police Department:
           <!--<label for="agency">Police Department:</label>-->
-          <input type="text" id="agency" name='agency' placeholder="e.g. " style="color: #000000;" >
+          <input type="text" id="agency" name='agency' placeholder="e.g. Chicago" style="color: #000000;" >
 
 	  </p>
         </div>
@@ -112,8 +112,7 @@
     <br>
     <br>
     <p><big>
-    The {{agency | safe}} is <b>{{moreorless | safe}} SUSCEPTIBLE</b> to racial profiling with 
-    black drivers being {{rpsi | safe}} times {{inequality | safe}} likely to be searched than white drivers. 
+    {{summary | safe}}
     </big>
     </p>
     <!-- <a href="#features" class="btn btn-circle page-scroll"> <i class="fa fa-angle-double-down animated"></i></a>--> 

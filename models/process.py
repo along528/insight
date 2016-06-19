@@ -15,26 +15,9 @@ try:
 except ImportError:
     use_sql = False
 
-    
-
-def get_data(munge=True,with_traffic=True):
-    db_name = 'traffic_joined_with_features'
-    if not with_traffic:
-        db_name = 'all_pd_joined_features'
-    sql_query = "SELECT  * FROM %s;" % (db_name)
-
-    data = None
-    if use_sql:
-        data = pd.read_sql_query(sql_query,con).drop('index',axis=1)
-    else:
-	data = pd.read_csv(db_name+'.csv')
-
-    data = data.set_index('surveyid',drop=True)
-    if not munge: 
-        return data
-    traffic_features = [ 'stops_total', 'searches_total', 'hits_total', 'stops_white', 'searches_white',
+traffic_features = [ 'stops_total', 'searches_total', 'hits_total', 'stops_white', 'searches_white',
      'hits_white', 'stops_black', 'searches_black', 'hits_black']
-    other_features = ['total',
+other_features = ['total',
                     'urban','rural', 
                      'institutionalized_all', 'institutionalized_adult_all',
                      'institutionalized_adult_federal_detention_all',
@@ -73,14 +56,33 @@ def get_data(munge=True,with_traffic=True):
                      'numothunm', 'numplanes', 'numcopters', 'numboats', 
 		     'nummotor', 'numcarcam',
                      'numfixcam', 'nummobcam', 'population']
-    features = list(other_features)
-    if with_traffic:
-        features+=traffic_features
-    data = data[features]
+    
+
+def get_data(munge=True,with_traffic=True,drop_features=True):
+    db_name = 'traffic_joined_with_features'
+    if not with_traffic:
+        db_name = 'all_pd_joined_features'
+    sql_query = "SELECT  * FROM %s;" % (db_name)
+
+    data = None
+    if use_sql:
+        data = pd.read_sql_query(sql_query,con).drop('index',axis=1)
+    else:
+	data = pd.read_csv(db_name+'.csv')
+
+    data = data.set_index('surveyid',drop=True)
+    if not munge: 
+        return data
+    if drop_features:
+        features = list(other_features)
+        if with_traffic:
+            features+=traffic_features
+        data = data[features]
     data = data.replace(' ',0)
     data = data.replace([np.inf, -np.inf], np.nan)
     data = data.dropna()
-    data = data.apply(lambda x: pd.to_numeric(x))
+    if drop_features:
+        data = data.apply(lambda x: pd.to_numeric(x))
     return data
                       
 def split_data(data):
@@ -108,8 +110,10 @@ def add_features(data_tmp):
 	do_rpsi = True
     #create per_capita features from census population
     population = data['total']
-    per_capita = data.drop('total',axis=1)
-    per_capita = per_capita.div(population,axis=0)
+    per_capita = data[other_features]
+    data[other_features] = data[other_features].apply(lambda x: pd.to_numeric(x))
+    per_capita = data[other_features]
+    #per_capita = per_capita.div(population,axis=0)
     per_capita.rename(columns=lambda x: x+'_per_capita',inplace=True)
     data = pd.concat([data,per_capita],axis=1)
     data['total'] = population
