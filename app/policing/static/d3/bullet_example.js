@@ -9,7 +9,7 @@ var chart = d3.bullet()
 
 var json_file = document.getElementById("helper").getAttribute("data-name");
 //d3.json("../static/d3/bullets.json", function(error, data) {
-d3.json("../static/d3/"+json_file, function(error, data) {
+d3.json("../static/d3/json/"+json_file, function(error, data) {
   if (error) throw error;
 
   var svg = d3.select("#features").selectAll("svg")

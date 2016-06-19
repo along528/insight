@@ -131,5 +131,5 @@ def output():
 		moreorless=moreorless,
 		inequality=inequality,
 		summary=summary,
-		surveyid='blah',
+		surveyid=str(results_series['surveyid']),
   		policing_db = results_html)
