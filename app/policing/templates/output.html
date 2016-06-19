@@ -32,16 +32,17 @@
 
 
 
-.bullet { font: 10px sans-serif; }
+.bullet { fill: #fff; font: 10px sans-serif; }
 .bullet .marker { stroke: #000; stroke-width: 2px; }
-.bullet .tick line { stroke: #666; stroke-width: .5px; }
+.bullet .tick line { stroke: #fff; stroke-width: .5px; }
 .bullet .range.s0 { fill: #eee; }
 .bullet .range.s1 { fill: #ddd; }
 .bullet .range.s2 { fill: #ccc; }
+.bullet .range.s3 { fill: #bbb; }
 .bullet .measure.s0 { fill: lightsteelblue; }
 .bullet .measure.s1 { fill: steelblue; }
-.bullet .title { font-size: 14px; font-weight: bold; }
-.bullet .subtitle { fill: #999; }
+.bullet .title { font-size: 14px; font-weight: bold; fill: #fff}
+.bullet .subtitle { fill: #fff; }
 
 </style>
 
@@ -149,7 +150,9 @@
     {{ descriptor | safe}}
     </p>
 
-    <button class="btn btn-default btn-lg"> Update </button>
+    <button class="btn btn-default btn-lg btn-right"> Update </button>
+    <br>
+    <br>
     <script src="../static/d3/d3.min.js"></script>
     <script src="../static/d3/bullet.js"></script>
     <script src="../static/d3/bullet_example.js"></script>
