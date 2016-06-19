@@ -1,4 +1,5 @@
 from flask import render_template
+import numpy as np
 from policing import app
 import pandas as pd
 from flask import request
@@ -34,10 +35,9 @@ def input():
 @app.route('/output')
 def output():
   agency = request.args.get('agency')
-  query = "SELECT * \
-  	   FROM app_db \
-	   WHERE (agency LIKE '%"+agency.title()+"%');" 
   results=data[data['agency'].str.contains(agency.title())]
+  if np.shape(results)[0]==0:
+      return render_template("input_retry.html")
   results = results.sort(columns=['population'],ascending=False).reset_index()
   results = results[results.index==0]
   features = results.drop(['index','surveyid','agency','city','state','zipcode'],axis=1)
