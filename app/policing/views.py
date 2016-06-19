@@ -2,9 +2,10 @@ from flask import render_template
 import numpy as np
 from policing import app
 import pandas as pd
-from flask import request
+from flask import request,send_file
 from os import sys
 from collections import OrderedDict
+import plotting
 
 
 def clean_df(results):
@@ -22,8 +23,15 @@ def get_html(results):
 					       "table table-hover")
 
 data = pd.read_csv('app_db.csv')
+ratios = {}
+ratios['hits_over_searches.csv'] = pd.read_csv('hits_over_searches.csv')
+ratios['searches_over_stops.csv'] = pd.read_csv('searches_over_stops.csv')
 
 
+@app.route('/scatter')
+def scatter():
+    img = plotting.get_scatter()
+    return send_file(img,mimetype='image/png')
  
 @app.route('/')
 @app.route('/index')
