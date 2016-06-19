@@ -7,6 +7,9 @@ from os import sys
 from collections import OrderedDict
 import plotting
 
+@app.route('/bullet')
+def bullet():
+    return render_template('bullet.html')
 
 def clean_df(results):
     results['agency'] = results['agency'].str.title()
