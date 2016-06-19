@@ -1,24 +1,21 @@
 import pandas as pd
 import numpy as np
-from sqlalchemy import create_engine
-from sqlalchemy_utils import database_exists, create_database
-import psycopg2
+import modeling
 
-dbname = 'combined_profiling'
-username = 'along528'
-pswd = 'password'
-con = None
-con = psycopg2.connect(database = dbname, user = username, host='localhost', password=pswd)
+use_sql = True
+try:
+    from sqlalchemy import create_engine
+    from sqlalchemy_utils import database_exists, create_database
+    import psycopg2
+    dbname = 'combined_profiling'
+    username = 'along528'
+    pswd = 'password'
+    con = psycopg2.connect(database = dbname, user = username, host='localhost', password=pswd)
+    engine = create_engine('postgresql://%s:%s@localhost/%s'%(username,pswd,dbname))
+except ImportError:
+    use_sql = False
 
-
-dbname = 'combined_profiling'
-username = 'along528'
-pswd = 'password'
-## 'engine' is a connection to a database
-## Here, we're using postgres, but sqlalchemy can connect to other things too.
-engine = create_engine('postgresql://%s:%s@localhost/%s'%(username,pswd,dbname))
-print engine.url
-
+    
 
 def get_data(munge=True,with_traffic=True):
     db_name = 'traffic_joined_with_features'
@@ -26,8 +23,12 @@ def get_data(munge=True,with_traffic=True):
         db_name = 'all_pd_joined_features'
     sql_query = "SELECT  * FROM %s;" % (db_name)
 
-    #data = munging.process_df(pd.read_sql_query(sql_query,con))
-    data = pd.read_sql_query(sql_query,con).drop('index',axis=1)
+    data = None
+    if use_sql:
+        data = pd.read_sql_query(sql_query,con).drop('index',axis=1)
+    else:
+	data = pd.read_csv(db_name+'.csv')
+
     data = data.set_index('surveyid',drop=True)
     if not munge: 
         return data
@@ -156,9 +157,42 @@ def add_features(data_tmp):
     return data
 
 
-def categorize(rpsi):
-    if rpsi >=0 and rpsi <=1.3:
-        return 0
-    elif rpsi > 1.3 and rpsi < 2.5:
-        return 1
-    else: return 2
+def get_split_add_data(munge=True,with_traffic=True):
+    test,val = split_data(get_data(munge=munge,with_traffic=with_traffic))
+    return add_features(test),add_features(val)
+
+
+class Processor:
+    def __init__(self,df,categorize=True,label='rpsi'):
+    	#input the validation data (not the test data)
+        self.df = df
+	self.categorize = categorize
+	self.label = label
+
+	
+	X_unscaled = None
+	if self.label in self.df.columns.tolist():
+	    X_unscaled = np.array(self.df.drop(self.label,1))
+	else:
+	    X_unscaled = np.array(self.df)
+	self.mean = np.mean(X_unscaled, axis=0)
+	self.std = np.std(X_unscaled, axis=0)
+    def get_scaled_Xy(self,unscaled_df):
+        X_unscaled = None
+	has_label = True
+        if 'rpsi' in unscaled_df.columns.tolist():
+	    X_unscaled = np.array(unscaled_df.drop(self.label,1))
+	else:
+	    X_unscaled = np.array(unscaled_df)
+	    has_label = False
+        X = (X_unscaled - self.mean)/self.std
+
+	y = None
+	if has_label:
+	    if self.categorize:
+	        y = np.array(unscaled_df[self.label].map(modeling.categorize))
+	    else:
+	        y = np.array(unscaled_df[self.label])
+	return X,y
+        
+        
