@@ -73,16 +73,29 @@ def get_data(munge=True,with_traffic=True,drop_features=True):
     data = data.set_index('surveyid',drop=True)
     if not munge: 
         return data
+
+    
+    
     if drop_features:
         features = list(other_features)
         if with_traffic:
             features+=traffic_features
         data = data[features]
+    
     data = data.replace(' ',0)
     data = data.replace([np.inf, -np.inf], np.nan)
     data = data.dropna()
     if drop_features:
         data = data.apply(lambda x: pd.to_numeric(x))
+   
+
+    #replace default max values
+    default_max = 999999
+    for column in data.columns.tolist():
+        if default_max  in data[column].values:
+            real_max = data[data[column]!=default_max][column].max()
+	    data.ix[data[column]==default_max,column] = real_max
+
     return data
                       
 def split_data(data):
