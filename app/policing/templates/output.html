@@ -33,14 +33,18 @@
 
 
 .bullet { fill: #fff; font: 10px sans-serif; }
-.bullet .marker { stroke: #000; stroke-width: 2px; }
+.bullet .marker { stroke: #dd3439; stroke-width: 4px; }
 .bullet .tick line { stroke: #fff; stroke-width: .5px; }
-.bullet .range.s0 { fill: #eee; }
-.bullet .range.s1 { fill: #ddd; }
-.bullet .range.s2 { fill: #ccc; }
-.bullet .range.s3 { fill: #bbb; }
-.bullet .measure.s0 { fill: lightsteelblue; }
-.bullet .measure.s1 { fill: steelblue; }
+.bullet .range.s0 { fill: #fff; }
+.bullet .range.s1 { fill: #ccc; }
+.bullet .range.s2 { fill: #aaa; }
+.bullet .range.s3 { fill: #ccc; }
+.bullet .range.s4 { fill: #fff; }
+.bullet .measure.s0 { fill: #007dff; }
+.bullet .measure.s1 { fill: #0064cc; }
+.bullet .measure.s2 { fill: #003770; }
+.bullet .measure.s3 { fill: #0064cc; }
+.bullet .measure.s4 { fill: #007dff; }
 .bullet .title { font-size: 14px; font-weight: bold; fill: #fff}
 .bullet .subtitle { fill: #fff; }
 
@@ -76,12 +80,14 @@
                     <li>
                         <a class="page-scroll" href="#about">About</a>
                     </li>
+		    <!--
                     <li>
                         <a class="page-scroll" href="#download">Download</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#contact">Contact</a>
                     </li>
+		    -->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -146,16 +152,14 @@
     By looking at surveys of your police department and the community it serves and comparing this to data on other departments nationally, 
     some criteria have been found to be associated with racial profiling. These are given below
     </p>
-    <p>
-    {{ descriptor | safe}}
-    </p>
+    <!-- <p> {{ descriptor | safe}} </p> -->
 
     <button class="btn btn-default btn-lg btn-right"> Update </button>
     <br>
     <br>
     <script src="../static/d3/d3.min.js"></script>
     <script src="../static/d3/bullet.js"></script>
-    <script type="text/javascript" id="helper" data-name="{{surveyid}}.json" src="../static/d3/bullet_example.js">
+    <script type="text/javascript" id="helper" data-name="{{surveyid}}.json" src="../static/d3/bullet_example.js"> 
 	</script>
     </div>
 
@@ -163,6 +167,17 @@
 
 
     <!-- About Section -->
+        <section id="about" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+	    <a> <img src="/scatter" width=67% height=auto class="img-rounded"></a>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!--
     <section id="about" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
@@ -173,10 +188,13 @@
             </div>
         </div>
     </section>
+    -->
 
 
 
+ 
     <!-- Download Section -->
+    <!--
     <section id="download" class="content-section text-center">
         <div class="download-section">
             <div class="container">
@@ -188,8 +206,10 @@
             </div>
         </div>
     </section>
+    -->
 
     <!-- Contact Section -->
+    <!--
     <section id="contact" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
@@ -211,9 +231,12 @@
             </div>
         </div>
     </section>
+    -->
 
     <!-- Map Section -->
+    <!--
     <div id="map"></div>
+    -->
 
     <!-- Footer -->
     <footer>
