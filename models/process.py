@@ -17,8 +17,7 @@ except ImportError:
 
 traffic_features = [ 'stops_total', 'searches_total', 'hits_total', 'stops_white', 'searches_white',
      'hits_white', 'stops_black', 'searches_black', 'hits_black']
-other_features = ['total',
-                    'urban','rural', 
+per_capita_features = ['urban','rural', 
                      'institutionalized_all', 'institutionalized_adult_all',
                      'institutionalized_adult_federal_detention_all',
                      'institutionalized_adult_federal_prison_all',
@@ -48,14 +47,16 @@ other_features = ['total',
 		     'fthumtrfoff', 'pthumtrfoff', 'numrespoff', 'numcpo', 
 		     'numsro', 'numpatr', 'numinvst', 'numjail',
                      'numcrtsec', 'numprocserv', 'opbudget','drugforf', 
-		     'totacad', 'totfield', 'totinsrv', 'white', 'black', 
+		     'totfield', 'totinsrv', 'white', 'black', 
 		     'hispanic', 'asian', 'nathaw', 'amerind', 'multrace',
                      'unkrace', 'male', 'female', 'totgender', 'chiefmin', 
 		     'chiefmax', 'sgtmin', 'sgtmax', 'entrymin', 'entrymax', 
 		     'nummrkcars', 'numothmrk', 'numumkcars',
                      'numothunm', 'numplanes', 'numcopters', 'numboats', 
 		     'nummotor', 'numcarcam',
-                     'numfixcam', 'nummobcam', 'population']
+                     'numfixcam', 'nummobcam']
+other_features = ['total','totacad']
+training_features = per_capita_features+other_features
     
 
 def get_data(munge=True,with_traffic=True,drop_features=True):
@@ -77,7 +78,7 @@ def get_data(munge=True,with_traffic=True,drop_features=True):
     
     
     if drop_features:
-        features = list(other_features)
+        features = list(training_features)
         if with_traffic:
             features+=traffic_features
         data = data[features]
@@ -85,16 +86,16 @@ def get_data(munge=True,with_traffic=True,drop_features=True):
     data = data.replace(' ',0)
     data = data.replace([np.inf, -np.inf], np.nan)
     data = data.dropna()
-    if drop_features:
-        data = data.apply(lambda x: pd.to_numeric(x))
+    data = data.apply(lambda x: pd.to_numeric(x,errors='ignore'))
    
 
     #replace default max values
     default_max = 999999
     for column in data.columns.tolist():
         if default_max  in data[column].values:
-            real_max = data[data[column]!=default_max][column].max()
-	    data.ix[data[column]==default_max,column] = real_max
+            mean = data[data[column]!=default_max][column].mean()
+	    data.ix[data[column]==default_max,column] = mean
+
 
     return data
                       
@@ -122,18 +123,16 @@ def add_features(data_tmp):
 			  'hits_black'],axis=1)
 	do_rpsi = True
     #create per_capita features from census population
+    data[training_features] = data[training_features].apply(lambda x: pd.to_numeric(x))
+    per_capita_data = data[per_capita_features]
     population = data['total']
-    per_capita = data[other_features]
-    data[other_features] = data[other_features].apply(lambda x: pd.to_numeric(x))
-    per_capita = data[other_features]
-    #per_capita = per_capita.div(population,axis=0)
-    per_capita.rename(columns=lambda x: x+'_per_capita',inplace=True)
-    data = pd.concat([data,per_capita],axis=1)
-    data['total'] = population
+    per_capita_data = per_capita_data.div(population,axis=0)
+    per_capita_data.rename(columns=lambda x: x+'_per_capita',inplace=True)
+    data = pd.concat([data,per_capita_data],axis=1)
     
     if do_rpsi:
         data['rpsi'] = rpsi
-        data = data[data['rpsi']<10]
+	data = data[data['rpsi'] < 10]
     #data = data[data['total']>10000]
 
     #build comparison features
