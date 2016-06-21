@@ -54,13 +54,18 @@ per_capita_features = ['urban','rural',
 		     'nummrkcars', 'numothmrk', 'numumkcars',
                      'numothunm', 'numplanes', 'numcopters', 'numboats', 
 		     'nummotor', 'numcarcam',
-                     'numfixcam', 'nummobcam']
+                     'numfixcam', 'nummobcam',
+		     'violent_crime_total',
+		            'murder_and_nonnegligent_manslaughter', 'forcible_rape', 'robbery',
+			           'aggravated_assault', 'property_crime_total', 'burglary',
+				          'larceny_theft', 'motor_vehicle_theft']
+
+
 other_features = ['total','totacad']
 training_features = per_capita_features+other_features
     
 
-def get_data(munge=True,with_traffic=True,drop_features=True):
-    db_name = 'traffic_joined_with_features'
+def get_data(munge=True,with_traffic=True,drop_features=True,db_name='traffic_joined_with_features'):
     if not with_traffic:
         db_name = 'all_pd_joined_features'
     sql_query = "SELECT  * FROM %s;" % (db_name)
@@ -173,8 +178,8 @@ def add_features(data_tmp):
     return data
 
 
-def get_split_add_data(munge=True,with_traffic=True):
-    test,val = split_data(get_data(munge=munge,with_traffic=with_traffic))
+def get_split_add_data(munge=True,with_traffic=True,db_name='traffic_joined_with_features'):
+    test,val = split_data(get_data(munge=munge,with_traffic=with_traffic,db_name=db_name))
     return add_features(test),add_features(val)
 
 
