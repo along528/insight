@@ -47,9 +47,8 @@ per_capita_features = ['urban','rural',
 		     'fthumtrfoff', 'pthumtrfoff', 'numrespoff', 'numcpo', 
 		     'numsro', 'numpatr', 'numinvst', 'numjail',
                      'numcrtsec', 'numprocserv', 'opbudget','drugforf', 
-		     'totfield', 'totinsrv', 'white', 'black', 
-		     'hispanic', 'asian', 'nathaw', 'amerind', 'multrace',
-                     'unkrace', 'male', 'female', 'totgender', 'chiefmin', 
+		     'totfield', 'totinsrv', 
+		     'chiefmin', 
 		     'chiefmax', 'sgtmin', 'sgtmax', 'entrymin', 'entrymax', 
 		     'nummrkcars', 'numothmrk', 'numumkcars',
                      'numothunm', 'numplanes', 'numcopters', 'numboats', 
@@ -57,9 +56,10 @@ per_capita_features = ['urban','rural',
                      'numfixcam', 'nummobcam']
 		     #'violent_crime_total', 'murder_and_nonnegligent_manslaughter', 'forcible_rape', 'robbery', 'aggravated_assault', 'property_crime_total', 'burglary', 'larceny_theft', 'motor_vehicle_theft']
 
+officer_demographic_features = ['white', 'black', 'hispanic', 'asian', 'nathaw', 'amerind', 'multrace', 'unkrace'] #, 'male','female']
 
 other_features = ['total','totacad']
-training_features = per_capita_features+other_features
+training_features = per_capita_features+other_features+officer_demographic_features
     
 
 def get_data(munge=True,with_traffic=True,drop_features=True,db_name='traffic_joined_with_features'):
@@ -127,11 +127,41 @@ def add_features(data_tmp):
 	do_rpsi = True
     #create per_capita features from census population
     data[training_features] = data[training_features].apply(lambda x: pd.to_numeric(x))
+    #calculate per capita features
     per_capita_data = data[per_capita_features]
     population = data['total']
     per_capita_data = per_capita_data.div(population,axis=0)
     per_capita_data.rename(columns=lambda x: x+'_per_capita',inplace=True)
     data = pd.concat([data,per_capita_data],axis=1)
+    #calculate officer demographic features per total officers
+    officer_demographic_data = data[officer_demographic_features]
+
+    def correct(x):
+    	if x < 0: return 0.
+    	return x
+    officer_demographics = process.add_features(process.get_data())[['white', 
+    						'black', 
+                                     		'hispanic', 'asian', 
+                                     		'nathaw', 'amerind', 
+                                     		'multrace', 'unkrace']]
+    total_officers = officer_demographics.sum(axis=1)
+    officer_demographics_norm = officer_demographics.div(total_officers,axis=0)
+    officer_demographics_minus_one = officer_demographics - 1
+    for col in officer_demographics_minus_one.columns.tolist():
+        officer_demographics_minus_one[col] = \
+		officer_demographics_minus_one[col].map(correct)
+    total_officers_minus_one = total_officers - 1
+    officer_demographics_minus_one_norm = \
+    	officer_demographics_minus_one.div(total_officers_minus_one,axis=0)
+    probabilities = officer_demographics_minus_one_norm*officer_demographics_norm
+    diversity_index = 1 - probabilities.sum(axis=1)
+    diversity_index
+    data['diversity_index'] = diversity_index
+
+    officer_demographic_norm.rename(columns=lambda x: x+'_per_totofficers',
+   				    inplace=True)
+
+    data = pd.concat([data,officer_demographic_norm],axis=1)
     
     if do_rpsi:
         data['rpsi'] = rpsi
