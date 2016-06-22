@@ -118,6 +118,7 @@ def add_features(data_tmp):
         num = data['searches_black'] * data['stops_white'] 
         denom = data['stops_black'] * data['searches_white']
         rpsi = num.div(denom)
+	data = data[data['searches_total']>=100]
         #drop remaining traffic features
         data = data.drop(['stops_total', 'searches_total', 'hits_total', 
 			  'stops_white', 'searches_white',
@@ -134,8 +135,8 @@ def add_features(data_tmp):
     
     if do_rpsi:
         data['rpsi'] = rpsi
-	data = data[data['rpsi'] < 10]
-    #data = data[data['total']>10000]
+	#data = data[data['rpsi'] < 10]
+    data = data[data['total']>10000]
 
     #build comparison features
     data['black_over_white_population_disparity'] =\
