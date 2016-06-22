@@ -101,8 +101,8 @@ def get_data(munge=True,with_traffic=True,drop_features=True,db_name='traffic_jo
 
     return data
                       
-def split_data(data):
-    test = data.sample(frac=0.2,random_state=20)
+def split_data(data,frac=0.2):
+    test = data.sample(frac=frac,random_state=20)
     val = data[data.index.isin(test.index.values.tolist())==False]
     return test,val
 
@@ -205,8 +205,8 @@ def add_features(data_tmp):
     return data
 
 
-def get_split_add_data(munge=True,with_traffic=True,db_name='traffic_joined_with_features'):
-    test,val = split_data(get_data(munge=munge,with_traffic=with_traffic,db_name=db_name))
+def get_split_add_data(munge=True,with_traffic=True,db_name='traffic_joined_with_features',frac=.2):
+    test,val = split_data(get_data(munge=munge,with_traffic=with_traffic,db_name=db_name),frac=frac)
     return add_features(test),add_features(val)
 
 
