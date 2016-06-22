@@ -133,17 +133,16 @@ def add_features(data_tmp):
     per_capita_data = per_capita_data.div(population,axis=0)
     per_capita_data.rename(columns=lambda x: x+'_per_capita',inplace=True)
     data = pd.concat([data,per_capita_data],axis=1)
-    #calculate officer demographic features per total officers
-    officer_demographic_data = data[officer_demographic_features]
 
+    #calculate officer demographic features per total officers
+    #and compute diversity index as
+    #1 - prob(same_race)
+    #where prob(same_race) is the probability
+    #to randomly select to officers of the same race from the department
+    officer_demographics= data[officer_demographic_features]
     def correct(x):
     	if x < 0: return 0.
     	return x
-    officer_demographics = process.add_features(process.get_data())[['white', 
-    						'black', 
-                                     		'hispanic', 'asian', 
-                                     		'nathaw', 'amerind', 
-                                     		'multrace', 'unkrace']]
     total_officers = officer_demographics.sum(axis=1)
     officer_demographics_norm = officer_demographics.div(total_officers,axis=0)
     officer_demographics_minus_one = officer_demographics - 1
@@ -158,10 +157,10 @@ def add_features(data_tmp):
     diversity_index
     data['diversity_index'] = diversity_index
 
-    officer_demographic_norm.rename(columns=lambda x: x+'_per_totofficers',
+    officer_demographics_norm.rename(columns=lambda x: x+'_per_totofficers',
    				    inplace=True)
 
-    data = pd.concat([data,officer_demographic_norm],axis=1)
+    data = pd.concat([data,officer_demographics_norm],axis=1)
     
     if do_rpsi:
         data['rpsi'] = rpsi
