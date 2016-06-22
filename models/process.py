@@ -54,11 +54,8 @@ per_capita_features = ['urban','rural',
 		     'nummrkcars', 'numothmrk', 'numumkcars',
                      'numothunm', 'numplanes', 'numcopters', 'numboats', 
 		     'nummotor', 'numcarcam',
-                     'numfixcam', 'nummobcam',
-		     'violent_crime_total',
-		            'murder_and_nonnegligent_manslaughter', 'forcible_rape', 'robbery',
-			           'aggravated_assault', 'property_crime_total', 'burglary',
-				          'larceny_theft', 'motor_vehicle_theft']
+                     'numfixcam', 'nummobcam']
+		     #'violent_crime_total', 'murder_and_nonnegligent_manslaughter', 'forcible_rape', 'robbery', 'aggravated_assault', 'property_crime_total', 'burglary', 'larceny_theft', 'motor_vehicle_theft']
 
 
 other_features = ['total','totacad']
