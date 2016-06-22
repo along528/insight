@@ -80,9 +80,11 @@ def output():
   summary = ""
   summary = 'The '+results_series['agency']+' is <b>'+moreorless+' SUSCEPTIBLE</b> to racial profiling '
   if results_series['is_measured']:
+      summary = 'The '+results_series['agency']+' is <b>'+moreorless+' SUSCEPTIBLE</b> to racial profiling '
       summary +='with black drivers being %3.1f times %s likely to be searched than white drivers.' % (rpsi,inequality)
   else:
-      summary+=' according to predictions comparing it to similar police departments where traffic stop information is available.'
+      summary = 'The '+results_series['agency']+' is predicted to be <b>'+moreorless+' SUSCEPTIBLE</b> to racial profiling '
+      summary+='according to comparisons to similar police departments where traffic stop information is available.'
   test = {}
   test['blah'] = 'woot'
 
