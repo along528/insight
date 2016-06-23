@@ -234,6 +234,7 @@ class Processor:
 	    X_unscaled = np.array(unscaled_df)
 	    has_label = False
         X = (X_unscaled - self.mean)/self.std
+	#X = X[np.isfinite(X)]
 
 	y = None
 	if has_label:
@@ -241,6 +242,7 @@ class Processor:
 	        y = np.array(unscaled_df[self.label].map(modeling.categorize))
 	    else:
 	        y = np.array(unscaled_df[self.label])
+	y = y
 	return X,y
         
         
