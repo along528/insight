@@ -33,13 +33,13 @@
 
 
 .bullet { fill: #fff; font: 10px sans-serif; }
-.bullet .marker { stroke: #dd3439; stroke-width: 4px; }
+.bullet .marker { stroke: #dd3439; stroke-width: 6px; }
 .bullet .tick line { stroke: #fff; stroke-width: .5px; }
-.bullet .range.s0 { fill: #fff; }
-.bullet .range.s1 { fill: #ccc; }
-.bullet .range.s2 { fill: #aaa; }
-.bullet .range.s3 { fill: #ccc; }
-.bullet .range.s4 { fill: #fff; }
+.bullet .range.s0 { fill: #007dff; }
+.bullet .range.s1 { fill: #0064cc; }
+.bullet .range.s2 { fill: #003770; }
+.bullet .range.s3 { fill: #0064cc; }
+.bullet .range.s4 { fill: #007dff; }
 .bullet .measure.s0 { fill: #007dff; }
 .bullet .measure.s1 { fill: #0064cc; }
 .bullet .measure.s2 { fill: #003770; }
@@ -154,13 +154,25 @@
     </p>
     <!-- <p> {{ descriptor | safe}} </p> -->
 
-    <button class="btn btn-default btn-lg btn-right"> Update </button>
+    
+    <table > 
+    <tr>
+        <td width="40%">
+    	<button class="btn btn-default btn-lg btn-left"> Update </button> 
+        </td>
+        <td width="20%">
+        </td>
+        <td width="40%">
+    	    <img src="../static/images/bullet_legend.png" width=100% height=auto >
+        </td>
+      </tr>
+    </table>
+    
     <br>
     <br>
     <script src="../static/d3/d3.min.js"></script>
     <script src="../static/d3/bullet.js"></script>
-    <script type="text/javascript" id="helper" data-name="{{surveyid}}.json" src="../static/d3/bullet_example.js"> 
-	</script>
+    <script type="text/javascript" id="helper" data-name="{{surveyid}}.json" src="../static/d3/bullet_example.js"> </script> 
     </div>
 
     </section>
@@ -193,7 +205,6 @@
 
 
 
- 
     <!-- Download Section -->
     <!--
     <section id="download" class="content-section text-center">

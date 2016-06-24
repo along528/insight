@@ -30,6 +30,7 @@ ratios = {}
 ratios['hits_over_searches.csv'] = pd.read_csv('hits_over_searches.csv')
 ratios['searches_over_stops.csv'] = pd.read_csv('searches_over_stops.csv')
 
+print 'LOCKED AND LOADED'
 
 @app.route('/scatter')
 def scatter():
