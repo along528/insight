@@ -214,7 +214,7 @@ d3.bullet = function() {
 };
 
 function bulletRanges(d) {
-  return d.ranges;
+  return d.ranges_tmp;
 }
 
 function bulletMarkers(d) {
@@ -222,7 +222,8 @@ function bulletMarkers(d) {
 }
 
 function bulletMeasures(d) {
-  return d.measures;
+  return d.dummy; 
+  //measures_tmp;
 }
 
 function bulletTranslate(x) {

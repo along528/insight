@@ -35,16 +35,24 @@ d3.json("../static/d3/json/"+json_file, function(error, data) {
       .attr("dy", "1em")
       .text(function(d) { return d.subtitle; });
 
-  d3.selectAll("button").on("click", function() {
-    svg.datum(randomize).call(chart.duration(1000)); // TODO automatic transition
+  d3.select("#button1").on("click", function() {
+    svg.datum(all_dist).call(chart.duration(1000)); // TODO automatic transition
+  });
+  d3.select("#button2").on("click", function() {
+    svg.datum(cat_dist).call(chart.duration(1000)); // TODO automatic transition
   });
 });
+function all_dist(d) {
+  d.ranges_tmp = d.ranges 
+  d.markers = d.markers
+  d.measures_tmp = d.dummy
+  return d;
+}
 
-function randomize(d) {
-  if (!d.randomizer) d.randomizer = randomizer(d);
-  d.ranges = d.ranges.map(d.randomizer);
-  d.markers = d.markers.map(d.randomizer);
-  d.measures = d.measures.map(d.randomizer);
+function cat_dist(d) {
+  d.ranges_tmp = d.measures 
+  d.markers = d.markers
+  d.measures_tmp = d.dummy
   return d;
 }
 
