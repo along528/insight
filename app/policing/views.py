@@ -15,13 +15,13 @@ ratios['hits_over_searches.csv'] = pd.read_csv('hits_over_searches.csv')
 ratios['searches_over_stops.csv'] = pd.read_csv('searches_over_stops.csv')
 
 @app.route('/search')
-def search(query=None,return_top_surveyid=False):
+def search(query=None,return_top_surveyid=False,num_br=3):
 	if query==None:
 	    query = request.args.get('agency_query')
 	try:
-	    if len(query)<3: return ''
+	    if len(query)<3: return '<br>'*num_br
 	except:
-	    return ''
+	    return '<br>'*num_br
 	#look for agencies that match
 	#take the intersection of any combination of words
 	agency_matches_set =None
@@ -77,7 +77,12 @@ def search(query=None,return_top_surveyid=False):
 	    output+="%s, %s, %s"  % (agency,city,state)
 	    output+="<br>"
 	    count+=1
-	    if count > 3: break
+	    if count >= 3: break
+	if count==0 and return_top_surveyid:
+	    return -1
+	elif count==0:
+	    return "No Match" +"<br>"*(num_br)
+	output += "<br>"*(num_br-count)
 	print output
 	return output
 
@@ -123,7 +128,8 @@ def output():
   print "ID",surveyid
   results=data[data['surveyid']==surveyid]
   if np.shape(results)[0]==0:
-      return render_template("input_retry.html")
+      #return render_template("input_retry.html")
+      return render_template("input.html")
   results = results.sort(columns=['population'],ascending=False).reset_index()
   results = results[results.index==0]
   features = results.drop(['index','surveyid','agency','city','state','zipcode'],axis=1)
