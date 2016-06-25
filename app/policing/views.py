@@ -21,24 +21,40 @@ def search():
 	    if len(query)<3: return ''
 	except:
 	    return ''
-	agency_matches = []
-	for word in query.split():
-	    if len(word)<3: continue
-            agency_matches+=data[data['agency'].str.contains(word.title())].index.tolist()
+	#look for agencies that match
+	#take the intersection of any combination of words
+	agency_matches_set =None
+	if len(query)>=3:
+	  for word in query.split():
+	    if agency_matches_set == None:
+                agency_matches_set = Set(data[data['agency']\
+			.str.contains(word.title())].index.tolist())
+	    else:
+                agency_matches_set  = agency_matches_set.\
+			intersection(Set(data[data['agency'].str.\
+				contains(word.title())].index.tolist()))
+	        
+
+	#look for states that match
 	state_matches = []
 	for word in query.split():
 	    if len(word)!=2: continue
-            state_matches+=data[data['state'].str.contains(word.upper())].index.tolist()
-	city_matches = []
-	for word in query.split():
-	    if len(word)<3: continue
-            city_matches+=data[data['city'].str.contains(word.title())].index.tolist()
-	agency_matches_set = set(agency_matches)
-	city_matches_set = set(city_matches)
+            state_matches+=data[data['state'].str.contains(\
+	    	word.upper())].index.tolist()
+	#if len(query)<3: 
+        #	city_matches+=data[data['city'].str.contains(query.title())].index.tolist()
+
 	state_matches_set = set(state_matches)
-	matches_set = agency_matches_set.union(city_matches_set)
+	matches_set = agency_matches_set #.union(city_matches_set)
+	#if including the state still gives some matches,
+	#update to this, assuming it narrows things down
+	#if it returns no match, assume this means
+	#that the user isn't typing a state and just use the agency.
 	if len(state_matches)>0:
-            matches_set = matches_set.intersection(state_matches_set)
+            tmp_matches_set = matches_set.intersection(state_matches_set)
+	    if len(tmp_matches_set)!=0:
+	       matches_set = tmp_matches_set
+
 	matches = list(matches_set)
 
 	
