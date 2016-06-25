@@ -15,8 +15,9 @@ ratios['hits_over_searches.csv'] = pd.read_csv('hits_over_searches.csv')
 ratios['searches_over_stops.csv'] = pd.read_csv('searches_over_stops.csv')
 
 @app.route('/search')
-def search():
-	query = request.args.get('agency_query')
+def search(query=None,return_top_surveyid=False):
+	if query==None:
+	    query = request.args.get('agency_query')
 	try:
 	    if len(query)<3: return ''
 	except:
@@ -26,6 +27,7 @@ def search():
 	agency_matches_set =None
 	if len(query)>=3:
 	  for word in query.split():
+	    if len(word)<3: continue
 	    if agency_matches_set == None:
                 agency_matches_set = Set(data[data['agency']\
 			.str.contains(word.title())].index.tolist())
@@ -68,11 +70,14 @@ def search():
 	    agency = series['agency']
 	    city = series['city']
 	    state = series['state']
-	    print agency,city,state
+	    surveyid = series['surveyid']
+	    print surveyid,agency,city,state
+	    if return_top_surveyid:
+	        return surveyid
 	    output+="%s, %s, %s"  % (agency,city,state)
 	    output+="<br>"
 	    count+=1
-	    if count > 5: break
+	    if count > 3: break
 	print output
 	return output
 
@@ -114,8 +119,9 @@ def input():
 
 @app.route('/output')
 def output():
-  agency = request.args.get('agency')
-  results=data[data['agency'].str.contains(agency.title())]
+  surveyid = search(query=request.args.get('agency_query'),return_top_surveyid=True)
+  print "ID",surveyid
+  results=data[data['surveyid']==surveyid]
   if np.shape(results)[0]==0:
       return render_template("input_retry.html")
   results = results.sort(columns=['population'],ascending=False).reset_index()
