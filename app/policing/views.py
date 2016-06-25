@@ -6,6 +6,63 @@ from flask import request,send_file
 from os import sys
 from collections import OrderedDict
 import plotting
+import json
+from sets import Set
+
+data = pd.read_csv('app_db.csv')
+ratios = {}
+ratios['hits_over_searches.csv'] = pd.read_csv('hits_over_searches.csv')
+ratios['searches_over_stops.csv'] = pd.read_csv('searches_over_stops.csv')
+
+@app.route('/search')
+def search():
+	query = request.args.get('agency_query')
+	try:
+	    if len(query)<3: return ''
+	except:
+	    return ''
+	agency_matches = []
+	for word in query.split():
+	    if len(word)<3: continue
+            agency_matches+=data[data['agency'].str.contains(word.title())].index.tolist()
+	state_matches = []
+	for word in query.split():
+	    if len(word)!=2: continue
+            state_matches+=data[data['state'].str.contains(word.upper())].index.tolist()
+	city_matches = []
+	for word in query.split():
+	    if len(word)<3: continue
+            city_matches+=data[data['city'].str.contains(word.title())].index.tolist()
+	agency_matches_set = set(agency_matches)
+	city_matches_set = set(city_matches)
+	state_matches_set = set(state_matches)
+	matches_set = agency_matches_set.union(city_matches_set)
+	if len(state_matches)>0:
+            matches_set = matches_set.intersection(state_matches_set)
+	matches = list(matches_set)
+
+	
+	matched_data = data[data.index.isin(matches)]
+        matched_data = matched_data.sort(columns=['total'],ascending=False).reset_index()
+
+	output = ''
+	count = 0
+	#sort by 
+	for index,series in matched_data.iterrows():
+	    agency = series['agency']
+	    city = series['city']
+	    state = series['state']
+	    print agency,city,state
+	    output+="%s, %s, %s"  % (agency,city,state)
+	    output+="<br>"
+	    count+=1
+	    if count > 5: break
+	print output
+	return output
+
+@app.route('/test')
+def test():
+    return render_template('input.min.html')
 
 @app.route('/bullet')
 def bullet():
@@ -25,12 +82,7 @@ def get_html(results):
     return results.to_html(index=False).replace("dataframe",
 					       "table table-hover")
 
-data = pd.read_csv('app_db.csv')
-ratios = {}
-ratios['hits_over_searches.csv'] = pd.read_csv('hits_over_searches.csv')
-ratios['searches_over_stops.csv'] = pd.read_csv('searches_over_stops.csv')
 
-print 'LOCKED AND LOADED'
 
 @app.route('/scatter')
 def scatter():

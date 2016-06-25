@@ -90,8 +90,12 @@
         <div class="form-group">
 	  <p class="intro-text-small">Enter your Police Department:
           <!--<label for="agency">Police Department:</label>-->
-          <input type="text" id="agency" name='agency' placeholder="e.g. Chicago" style="color: #000000;" >
+          <input type="text" id="agency_query" name='agency_query' placeholder="e.g. Chicago" style="color: #000000;" onkeyup="complete()">
 	  </p>
+          <div id="results_search"></div>
+      <script type="text/javascript" src="../static/js/jquery-3.0.0.min.js"></script>
+      <script type="text/javascript" src="../static/js/autocomplete.js"></script>
+	  
         </div>
 	<br>
 
@@ -108,14 +112,17 @@
                 </div>
             </div>
         </div>
+
+
     </header>
+    
 
     <!-- About Section -->
     <section id="about" class="container content-section text-center">
         <div class="row">
             <!-- <div class="col-lg-8 col-lg-offset-2"> </div> -->
 	    <!-- <a> <img src="/scatter" width=50% height=auto class="img-rounded"></a> -->
-<iframe src="https://docs.google.com/presentation/d/1gAK5aiamCTj6EqsxJiGX6YMxBtctOc2v-07PcG4gKVw/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<!-- <iframe src="https://docs.google.com/presentation/d/1gAK5aiamCTj6EqsxJiGX6YMxBtctOc2v-07PcG4gKVw/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe> -->
 
 
         </div>
@@ -186,7 +193,7 @@
     <script src="../static/js/jquery.easing.min.js"></script>
 
     <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdihqEOecBCRmpuuCY-JnY918yexwE_2M&sensor=False"></script>
+    <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdihqEOecBCRmpuuCY-JnY918yexwE_2M&sensor=False"></script> -->
 
     <!-- Custom Theme JavaScript -->
     <script src="../static/js/grayscale.js"></script>
