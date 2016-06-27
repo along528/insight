@@ -145,8 +145,8 @@ def output():
   if results_series['is_measured']:
 	  rpsi = results_series['rpsi']
 	  moreorless = 'LESS'
-	  if rpsi > 1.3 and rpsi<2.5: moreorless = 'MORE'
-	  elif rpsi > 2.5: moreorless = 'VERY'
+	  if rpsi > 1.6 and rpsi<=2.2: moreorless = 'MORE'
+	  elif rpsi > 2.2: moreorless = 'VERY'
   else:
           rpsi = results_series['rpsi_predicted']
 	  moreorless = 'LESS'
@@ -164,10 +164,16 @@ def output():
       summary = 'The '+results_series['agency']+' is <b>'+moreorless+' SUSCEPTIBLE</b> to racial profiling '
       summary +='with black drivers being %3.1f times %s likely to be searched than white drivers.' % (rpsi,inequality)
   else:
-      summary = 'The '+results_series['agency']+' is predicted to be <b>'+moreorless+' SUSCEPTIBLE</b> to racial profiling '
-      summary+='according to comparisons to similar police departments where traffic stop information is available.'
-  test = {}
-  test['blah'] = 'woot'
+      summary = 'The '+results_series['agency']+' is predicted to be <b>'+moreorless+' SUSCEPTIBLE</b> to racial profiling. '
+      #summary+='according to comparisons to similar police departments where traffic stop information is available. '
+      summary+='Agencies with this classification are predicted to search black drivers ' 
+      if moreorless == 'MORE':
+         summary+='60% to 120% more often than white drivers.'
+      elif moreorless == 'LESS':
+         summary+='more often than white drivers by no more than 60%.'
+      elif moreorless == 'VERY':
+         summary+='at least 120% more often white drivers.'
+
 
   average = data.mean()
 
