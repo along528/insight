@@ -16,6 +16,7 @@ ratios['searches_over_stops.csv'] = pd.read_csv('searches_over_stops.csv')
 
 @app.route('/search')
 def search(query=None,return_top_surveyid=False,num_br=3):
+	
 	if query==None:
 	    query = request.args.get('agency_query')
 	try:
@@ -126,7 +127,11 @@ def input():
 def output():
   surveyid = search(query=request.args.get('agency_query'),return_top_surveyid=True)
   print "ID",surveyid
-  results=data[data['surveyid']==surveyid]
+  try:
+     results=data[data['surveyid']==surveyid]
+  except:
+      return render_template("input.html")
+
   if np.shape(results)[0]==0:
       #return render_template("input_retry.html")
       return render_template("input.html")
