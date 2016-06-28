@@ -17,8 +17,8 @@ d3.bullet = function() {
   // For each small multiple…
   function bullet(g) {
     g.each(function(d, i) {
-      var rangez = ranges.call(this, d, i).slice().sort(d3.descending),
-          markerz = markers.call(this, d, i).slice().sort(d3.descending),
+      var markerz = markers.call(this, d, i).slice().sort(d3.descending),
+          rangez = ranges.call(this, d, i).slice().sort(d3.descending),
           measurez = measures.call(this, d, i).slice().sort(d3.descending),
           g = d3.select(this);
 
@@ -218,7 +218,7 @@ function bulletRanges(d) {
 }
 
 function bulletMarkers(d) {
-  return d.markers;
+  return d.markers_tmp;
 }
 
 function bulletMeasures(d) {

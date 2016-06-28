@@ -1,7 +1,8 @@
 
 var margin = {top: 5, right: 10, bottom: 20, left: 300},
-    width = 960 - margin.left - margin.right,
-    height = 50 - margin.top - margin.bottom;
+    //width = 960 - margin.left - margin.right,
+    width = 1100 - margin.left - margin.right,
+    height = 60 - margin.top - margin.bottom;
 
 var chart = d3.bullet()
     .width(width)
@@ -35,23 +36,33 @@ d3.json("../static/d3/json/"+json_file, function(error, data) {
       .attr("dy", "1em")
       .text(function(d) { return d.subtitle; });
 
+ //svg.datum(all_dist).call(chart.duration(1)); // TODO automatic transition
+ //svg.datum(dummy).call(chart.duration(1)); // TODO automatic transition
+
   d3.select("#button1").on("click", function() {
-    svg.datum(all_dist).call(chart.duration(1000)); // TODO automatic transition
+    svg.datum(all_dist).call(chart.duration(1500)); // TODO automatic transition
   });
   d3.select("#button2").on("click", function() {
-    svg.datum(cat_dist).call(chart.duration(1000)); // TODO automatic transition
+    svg.datum(cat_dist).call(chart.duration(1500)); // TODO automatic transition
   });
 });
+
+function dummy(d) {
+  d.ranges_tmp = d.dummy 
+  d.markers_tmp = d.dummy
+  d.measures_tmp = d.dummy
+  return d;
+}
 function all_dist(d) {
   d.ranges_tmp = d.ranges 
-  d.markers = d.markers
+  d.markers_tmp = d.markers
   d.measures_tmp = d.dummy
   return d;
 }
 
 function cat_dist(d) {
   d.ranges_tmp = d.measures 
-  d.markers = d.markers
+  d.markers_tmp = d.markers
   d.measures_tmp = d.dummy
   return d;
 }
