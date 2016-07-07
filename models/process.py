@@ -119,6 +119,7 @@ def add_features(data_tmp):
         denom = data['stops_black'] * data['searches_white']
         rpsi = num.div(denom)
 	data = data[data['searches_total']>=100]
+	data = data[data['stops_black']>=100]
         #drop remaining traffic features
         data = data.drop(['stops_total', 'searches_total', 'hits_total', 
 			  'stops_white', 'searches_white',
