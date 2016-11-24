@@ -82,11 +82,11 @@ d3.bullet = function() {
           .attr("y", height / 3);
 
       // Update the marker lines.
-      var marker = g.selectAll("line.marker")
+      var marker = g.selectAll("line.marker2")
           .data(markerz);
 
       marker.enter().append("line")
-          .attr("class", "marker")
+          .attr("class", "marker2")
           .attr("x1", x0)
           .attr("x2", x0)
           .attr("y1", height / 6)

@@ -28,12 +28,15 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+<!-- .bullet .marker { stroke: #dd3439; stroke-width: 6px; } -->
     <style>
 
 
 
 .bullet { fill: #fff; font: 10px sans-serif; }
-.bullet .marker { stroke: #dd3439; stroke-width: 6px; }
+.bullet .marker1 { stroke: #007dff; stroke-width: 6px; stroke-opacity: 0.4 }
+.bullet .marker2 { stroke: #dd3439; stroke-width: 6px; } 
 .bullet .tick line { stroke: #fff; stroke-width: .5px; }
 .bullet .range.s0 { fill: #007dff; }
 .bullet .range.s1 { fill: #0064cc; }
@@ -169,7 +172,9 @@
         <td width="10%">
         </td>
         <td width="50%">
-    	    <img src="../static/images/legend.png" width="500" height=auto >
+	    <!-- old version -->
+    	    <!-- <img src="../static/images/legend.png" width="500" height=auto > -->
+    	    <img src="../static/images/legend_alt.png" width="500" height=auto >
         </td>
       </tr>
     </table>
@@ -177,8 +182,14 @@
     <br>
     <br>
     <script src="../static/d3/d3.min.js"></script>
-    <script src="../static/d3/bullet.js"></script>
+    <!-- old version -->
+    <!-- <script src="../static/d3/bullet.js"></script>
     <script type="text/javascript" id="helper" data-name="{{surveyid}}.json" src="../static/d3/bullet_example.js"> </script> 
+    -->
+
+    <!-- new version -->
+    <script src="../static/d3/bullet_alt.js"></script>
+    <script type="text/javascript" id="helper" data-name="{{surveyid}}.json" src="../static/d3/bullet_example_alt.js"> </script> 
     </div>
 
     </section>
