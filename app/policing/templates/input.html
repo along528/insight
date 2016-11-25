@@ -118,12 +118,76 @@
     
 
     <!-- About Section -->
-    <section id="about" class="container content-section text-center">
+    <section id="about" class="container content-section text-left">
+
+        <div class="row">
+        <h3>About</h3>
+	<p>
+	This site identifies and predicts those police departments in the US that
+	are most susceptible to racial profiling. Beyond that it also seeks to 
+	highlight certain traits that seem to be correlated with racial profiling.
+	The site uses traffic stop data from 
+	<a href="https://opendatapolicing.com/">North Carolina</a>,
+	<a href="https://idot.illinois.gov/transportation-system/local-transportation-partners/law-enforcement/illinois-traffic-stop-study">Illinois</a>,
+	and 
+	<a href="http://ctrp3.ctdata.org/">Connecticut</a> along with 
+	<a href="http://factfinder.census.gov/faces/nav/jsf/pages/index.xhtml">2010 Census data</a> and 
+	<a href="http://www.bjs.gov/index.cfm?ty=pbdetail&iid=1750">police department survey data</a> collected by the Department of Justice.
+	</p>
+	<p>
+	Data on individual traffic stops has been collected for over a decade
+	in some states. This data reveals racial disparities in the
+	rate at which drivers are searched for most departments, 
+	even though there is no
+	observed difference in the rate at which contraband is found a.k.a
+	the "hit" rate.
+	This can be seen clearly in the chart below, which shows the average
+	hit rate vs the average search rate for individual police departments
+	when considering black drivers and white drivers separately. 
+	</p>
+
+        <div class="col-md-8 col-md-offset-2">
+        {{bokeh_script | safe}} 
+	</div>
+        </div>
+	<br>
+
+        <div class="row">
+
+	<p>
+	Black drivers are searched about twice as often
+	as white drivers when averaging over all departments. Some departments
+	show even larger disparities, like Chicago, where black drivers
+	are searched 6 times as often even though they have similar
+	hit rates. Try to find the rates in
+	Chicago for both black and white drivers. If you can't find it, 
+	scroll up and search for the Chicago Police Department.
+	</p>
+
+	<p>
+	For those states and departments where traffic stop is not available,
+	nationally available census and police department survey data is
+	is used to predict the level of susceptibility to racial profiling. 
+	This is done by comparing this data to the traffic
+	stop data where it is available in order to build a 
+	machine learning model. The model is then
+	used to make a prediction about those places where there is no
+	traffic stop data. Beyond that, the model gives us some insight 
+	into what are the important factors leading to that prediction.
+	For more details, check out the slides below or go ahead and search
+	for a particular police department.
+	</p>
+	</div>
+	
+	<br>
+
         <div class="row">
             <!-- <div class="col-lg-8 col-lg-offset-2"> </div> -->
 
 	    <!-- <a> <img src="/scatter" width=50% height=auto class="img-rounded"></a> -->
+            <div class="col-md-8 col-md-offset-1">
 	    <iframe src="https://docs.google.com/presentation/d/1puMZahrX-8OMbSz14UCrgQXDEQYX9-yeLuHMM-8Mtl0/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+	    </div>
 
 
         </div>

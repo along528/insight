@@ -33,6 +33,7 @@ df_rates = pd.read_csv('traffic_rates.csv').dropna()
 source_rates = ColumnDataSource(df_rates)
 
 def format(figure):
+	  figure.title_text_color = "white"
 	  figure.background_fill_color = "black"
 	  figure.border_fill_color = "black"
 	  figure.outline_line_color = "white"
@@ -155,7 +156,24 @@ def scatter():
 @app.route('/index')
 @app.route('/input')
 def input():
-    return render_template("input.html")
+
+  hover = HoverTool( tooltips=[ ('Agency','<font color="#000000"> @agency, @city, @state</font>')])
+  plot = format(figure(title="Hit Rate vs Search Rate Split by Race",plot_width=800, plot_height=400,tools=[hover,"pan","wheel_zoom","box_zoom","reset"]))
+  plot.circle('black_search_rate','black_hit_rate',color="#dd3439",size=10,source=source_rates,legend="Black Drivers",alpha=0.7)
+  plot.circle('white_search_rate','white_hit_rate',color="#257bf8",size=10,source=source_rates,legend="White Drivers",alpha=0.7)
+  plot.xaxis.axis_label = "Searches / Stops"
+  plot.yaxis.axis_label = "Hits / Searches"
+
+  curdoc().add_root(plot)
+  session = push_session(curdoc())
+  bokeh_script = autoload_server(plot, session_id=session.id)
+  bokeh_id = bokeh_script.split()[2].split('"')[1]
+  print "script:"
+  print bokeh_script
+  print "id:"
+  print bokeh_id
+  return render_template("input.html",
+		bokeh_script=bokeh_script)
 
 
 @app.route('/output')
@@ -243,10 +261,16 @@ def output():
          descriptor +='<br>'
 
 
+
+
+  rpsi = "%3.2f" % (rpsi)
+  print rpsi
+
+
   hover = HoverTool( tooltips=[ ('Agency','<font color="#000000"> @agency, @city, @state</font>')])
-  plot = format(figure(plot_width=800, plot_height=400,tools=[hover,"pan","wheel_zoom","box_zoom","reset"]))
-  plot.circle('black_search_rate','black_hit_rate',color="#dd3439",size=6,source=source_rates,legend="Black Drivers",alpha=0.8)
-  plot.circle('white_search_rate','white_hit_rate',color="#257bf8",size=6,source=source_rates,legend="White Drivers",alpha=0.8)
+  plot = format(figure(title="Hit Rate vs Search Rate Split by Race",plot_width=800, plot_height=400,tools=[hover,"pan","wheel_zoom","box_zoom","reset"]))
+  plot.circle('black_search_rate','black_hit_rate',color="#dd3439",size=10,source=source_rates,legend="Black Drivers",alpha=0.7)
+  plot.circle('white_search_rate','white_hit_rate',color="#257bf8",size=10,source=source_rates,legend="White Drivers",alpha=0.7)
   plot.xaxis.axis_label = "Searches / Stops"
   plot.yaxis.axis_label = "Hits / Searches"
 
@@ -254,14 +278,8 @@ def output():
   session = push_session(curdoc())
   bokeh_script = autoload_server(plot, session_id=session.id)
   bokeh_id = bokeh_script.split()[2].split('"')[1]
-  print "script:"
   print bokeh_script
-  print "id:"
-  print bokeh_id
 
-
-  rpsi = "%3.2f" % (rpsi)
-  print rpsi
 
   results_html=get_html(features)
   #the_result = ModelIt(patient,births)
@@ -272,7 +290,7 @@ def output():
   		zipcode=results_series['zipcode'], 
 		rpsi=rpsi,
 		bokeh_script=bokeh_script,
-		bokeh_id=bokeh_id,
+		#bokeh_id=bokeh_id,
 		results_series=results_series,
 		descriptor=descriptor,
 		moreorless=moreorless,
