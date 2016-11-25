@@ -8,6 +8,12 @@ from collections import OrderedDict
 import plotting
 import json
 from sets import Set
+#run bokeh serve locally first
+from bokeh.client import push_session,pull_session
+from bokeh.embed import autoload_server
+from bokeh.plotting import figure, curdoc
+from bokeh.layouts import column
+
 
 data = pd.read_csv('app_db.csv')
 ratios = {}
@@ -208,6 +214,17 @@ def output():
          descriptor +='<br>'
 
 
+  plot = figure()
+  plot.circle([1,2], [3,4])
+  curdoc().add_root(plot)
+  session = push_session(curdoc())
+  bokeh_script = autoload_server(plot, session_id=session.id)
+  bokeh_id = bokeh_script.split()[2].split('"')[1]
+  print "script:"
+  print bokeh_script
+  print "id:"
+  print bokeh_id
+
 
   rpsi = "%3.2f" % (rpsi)
   print rpsi
@@ -220,6 +237,8 @@ def output():
   		state=results_series['state'], 
   		zipcode=results_series['zipcode'], 
 		rpsi=rpsi,
+		bokeh_script=bokeh_script,
+		bokeh_id=bokeh_id,
 		results_series=results_series,
 		descriptor=descriptor,
 		moreorless=moreorless,
