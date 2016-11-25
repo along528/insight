@@ -8,17 +8,46 @@ from collections import OrderedDict
 import plotting
 import json
 from sets import Set
-#run bokeh serve locally first
+"""
+run bokeh serve locally first
+by doing either
+bokeh serve --host localhost:5000 --host localhost:5006
+or
+bokeh serve --host '*'
+the latter might be less secure
+"""
+
 from bokeh.client import push_session,pull_session
 from bokeh.embed import autoload_server
 from bokeh.plotting import figure, curdoc
 from bokeh.layouts import column
+from bokeh.models import ColumnDataSource, HoverTool
+
 
 
 data = pd.read_csv('app_db.csv')
 ratios = {}
-ratios['hits_over_searches.csv'] = pd.read_csv('hits_over_searches.csv')
-ratios['searches_over_stops.csv'] = pd.read_csv('searches_over_stops.csv')
+df_hit_rate = pd.read_csv('hits_over_searches.csv').rename(columns=lambda x: x+"_hit_rate")
+df_search_rate = pd.read_csv('searches_over_stops.csv').rename(columns=lambda x: x+"_search_rate")
+df_rates = pd.read_csv('traffic_rates.csv').dropna()
+source_rates = ColumnDataSource(df_rates)
+
+def format(figure):
+	  figure.background_fill_color = "black"
+	  figure.border_fill_color = "black"
+	  figure.outline_line_color = "white"
+	  figure.xaxis.axis_line_color = "white"
+	  figure.yaxis.axis_line_color = "white"
+	  figure.xaxis.major_label_text_color = "white"
+	  figure.yaxis.major_label_text_color = "white"
+	  figure.xaxis.axis_label_text_color = "white"
+	  figure.yaxis.axis_label_text_color = "white"
+	  figure.xaxis.minor_tick_line_color = "white"
+	  figure.yaxis.minor_tick_line_color = "white"
+	  figure.xaxis.major_tick_line_color = "white"
+	  figure.yaxis.major_tick_line_color = "white"
+	  return figure
+
 
 @app.route('/search')
 def search(query=None,return_top_surveyid=False,num_br=3):
@@ -214,8 +243,13 @@ def output():
          descriptor +='<br>'
 
 
-  plot = figure()
-  plot.circle([1,2], [3,4])
+  hover = HoverTool( tooltips=[ ('Agency','<font color="#000000"> @agency, @city, @state</font>')])
+  plot = format(figure(plot_width=800, plot_height=400,tools=[hover,"pan","wheel_zoom","box_zoom","reset"]))
+  plot.circle('black_search_rate','black_hit_rate',color="#dd3439",size=6,source=source_rates,legend="Black Drivers",alpha=0.8)
+  plot.circle('white_search_rate','white_hit_rate',color="#257bf8",size=6,source=source_rates,legend="White Drivers",alpha=0.8)
+  plot.xaxis.axis_label = "Searches / Stops"
+  plot.yaxis.axis_label = "Hits / Searches"
+
   curdoc().add_root(plot)
   session = push_session(curdoc())
   bokeh_script = autoload_server(plot, session_id=session.id)
