@@ -149,6 +149,26 @@
     </div>
 
     </section>
+    <section {{do_display | safe}} id="rates" class="container content-section text-left">
+	<div class="row">
+        <h3>Traffic Stop Information</h3>
+	<p>
+	The {{agency | safe}} has provided data on individual traffic stops.
+	In many departments, this data reveals racial disparities in the
+	rate at which drivers are searched, 
+	even though there is no
+	observed difference in the hit rate a.k.a. the rate at which contraband is found.
+	The average
+	hit rate vs the average search rate is shown below
+	for individual police departments
+	when considering black drivers and white drivers separately.
+	The rates for the {{agency | safe}} are highlighted.
+	</p>
+        <div class="col-md-8 col-md-offset-2">
+        {{bokeh_script_rates_measured | safe}} 
+	</div>
+	</div>
+    </section>
     <section id="features" class="container content-section text-left">
 	<div class="row">
 
@@ -224,15 +244,14 @@
 	in some states. This data reveals racial disparities in the
 	rate at which drivers are searched for most departments, 
 	even though there is no
-	observed difference in the rate at which contraband is found a.k.a
-	the "hit" rate.
+	observed difference in the hit rate a.k.a the rate at which contraband is found.
 	This can be seen clearly in the chart below, which shows the average
 	hit rate vs the average search rate for individual police departments
 	when considering black drivers and white drivers separately. 
 	</p>
 
         <div class="col-md-8 col-md-offset-2">
-        {{bokeh_script | safe}} 
+        {{bokeh_script_about | safe}} 
 	</div>
         </div>
 	<br>

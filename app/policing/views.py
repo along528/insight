@@ -267,18 +267,56 @@ def output():
   print rpsi
 
 
-  hover = HoverTool( tooltips=[ ('Agency','<font color="#000000"> @agency, @city, @state</font>')])
-  plot = format(figure(title="Hit Rate vs Search Rate Split by Race",plot_width=800, plot_height=400,tools=[hover,"pan","wheel_zoom","box_zoom","reset"]))
-  plot.circle('black_search_rate','black_hit_rate',color="#dd3439",size=10,source=source_rates,legend="Black Drivers",alpha=0.7)
-  plot.circle('white_search_rate','white_hit_rate',color="#257bf8",size=10,source=source_rates,legend="White Drivers",alpha=0.7)
-  plot.xaxis.axis_label = "Searches / Stops"
-  plot.yaxis.axis_label = "Hits / Searches"
+  alpha = 0.7
+  legend_tag = ""
+  has_traffic_data = results_series['is_measured'] #df_rates[df_rates.surveyid==surveyid].count!=0
+  if has_traffic_data:
+      alpha = 0.2
+      legend_tag = " - Other Agencies"
 
-  curdoc().add_root(plot)
+
+  bokeh_script_rates_measured = ""
+  if results_series['is_measured']:
+  	  hover1 = HoverTool( tooltips=[ ('Agency','<font color="#000000"> @agency, @city, @state</font>')])
+	  plot1 = format(figure(title="Hit Rate vs Search Rate Split by Race",plot_width=800, plot_height=400,tools=[hover1,"pan","wheel_zoom","box_zoom","reset"]))
+	  plot1.circle('black_search_rate','black_hit_rate',color="#dd3439",size=10,
+		      source=source_rates,legend="Black Drivers - Other Agencies",alpha=0.2)
+	  plot1.circle('white_search_rate','white_hit_rate',color="#257bf8",size=10,
+		      source=source_rates,legend="White Drivers - Other Agencies",alpha=0.2)
+	  if has_traffic_data:
+	      plot1.circle('black_search_rate','black_hit_rate',color="#dd3439",size=20,
+		      source=ColumnDataSource(df_rates[df_rates.surveyid==surveyid]),
+		      legend="Black Drivers - "+results_series['agency'], alpha=1.)
+	      plot1.circle('white_search_rate','white_hit_rate',color="#257bf8",size=20,
+		      source=ColumnDataSource(df_rates[df_rates.surveyid==surveyid]),
+		      legend="White Drivers - "+results_series['agency'], alpha=1.)
+	  plot1.xaxis.axis_label = "Searches / Stops"
+	  plot1.yaxis.axis_label = "Hits / Searches"
+
+	  curdoc().add_root(plot1)
+	  session = push_session(curdoc())
+	  bokeh_script_rates_measured = autoload_server(plot1, session_id=session.id)
+	  print bokeh_script_rates_measured
+
+  hover2 = HoverTool( tooltips=[ ('Agency','<font color="#000000"> @agency, @city, @state</font>')])
+  plot2 = format(figure(title="Hit Rate vs Search Rate Split by Race",plot_width=800, plot_height=400,tools=[hover2,"pan","wheel_zoom","box_zoom","reset"]))
+  plot2.circle('black_search_rate','black_hit_rate',color="#dd3439",size=10,
+  	      source=source_rates,legend="Black Drivers",alpha=0.7)
+  plot2.circle('white_search_rate','white_hit_rate',color="#257bf8",size=10,
+              source=source_rates,legend="White Drivers",alpha=0.7)
+  plot2.xaxis.axis_label = "Searches / Stops"
+  plot2.yaxis.axis_label = "Hits / Searches"
+
+  curdoc().add_root(plot2)
   session = push_session(curdoc())
-  bokeh_script = autoload_server(plot, session_id=session.id)
-  bokeh_id = bokeh_script.split()[2].split('"')[1]
-  print bokeh_script
+  bokeh_script_about = autoload_server(plot2, session_id=session.id)
+  print bokeh_script_about
+
+  do_display = ""
+  if not results_series['is_measured']:
+  	#by setting this, it can be used in a section or 
+	#div to turn off the display of that section
+  	do_display = 'style="display:none"'
 
 
   results_html=get_html(features)
@@ -289,7 +327,9 @@ def output():
   		state=results_series['state'], 
   		zipcode=results_series['zipcode'], 
 		rpsi=rpsi,
-		bokeh_script=bokeh_script,
+		bokeh_script_about=bokeh_script_about,
+		bokeh_script_rates_measured=bokeh_script_rates_measured,
+		do_display=do_display,
 		#bokeh_id=bokeh_id,
 		results_series=results_series,
 		descriptor=descriptor,
