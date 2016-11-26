@@ -4,9 +4,15 @@
 ## Are you profiling me? 
 www.areyouprofiling.me
 
-This presents the work related to a project built by Alex Long for the Insight Health Data Science program in Boston during the summer of 2016. The project identifies and predicts those police departments in the US that are most susceptible to racial profiling. Beyond that it also seeks to highlight certain traits that seem to be correlated with racial profiling. The results are presented online at www.areyouprofiling.me. The site uses traffic stop data from North Carolina, Illinois, and Connecticut along with 2010 Census data and police department survey data collected by the Department of Justice.
+This presents the work related to a project built by Alex Long for the Insight Health Data Science program in Boston during the summer of 2016. The project identifies and predicts those police departments in the US that are most susceptible to racial profiling. Beyond that it also seeks to highlight certain traits that seem to be correlated with racial profiling. The results are presented online at www.areyouprofiling.me. The project uses traffic stop data from
+	<a href="https://opendatapolicing.com/">North Carolina</a>,
+	<a href="https://idot.illinois.gov/transportation-system/local-transportation-partners/law-enforcement/illinois-traffic-stop-study">Illinois</a>,
+	and 
+	<a href="http://ctrp3.ctdata.org/">Connecticut</a> along with 
+	<a href="http://factfinder.census.gov/faces/nav/jsf/pages/index.xhtml">2010 Census data</a> and 
+	<a href="http://www.bjs.gov/index.cfm?ty=pbdetail&iid=1750">police department survey data</a> collected by the Department of Justice.
 
-Included are the input data sets and the code for running the web application along with studies and models of the data.  Datasets are processes using PostgreSQL and studied further in a series of python Jupyter notebooks using the python scientific computing stack indlucing pandas, scikit-learn, and matplotlib. The web application framework is built using Flask and Bootstrap with interactive visualizations built using D3 and Bokeh. 
+Included are the input data sets and the code for running the web application along with studies and models of the data.  Datasets are processed using PostgreSQL and studied further in a series of python Jupyter notebooks using pandas, scikit-learn, and matplotlib. The web application framework is built using Flask and Bootstrap with interactive visualizations built using D3 and Bokeh. 
 
 ### Installation
 If you have Anaconda, the python dependencies can be setup by simply building a conda environment 
