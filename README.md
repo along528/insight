@@ -1,7 +1,5 @@
 # Insight Health Data Science
 
-# ![pageres](insight-logo.png)
-
 # ![pageres](image.png)
 ## Are you profiling me? 
 www.areyouprofiling.me
