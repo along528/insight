@@ -23,8 +23,7 @@ from bokeh.plotting import figure, curdoc
 from bokeh.layouts import column
 from bokeh.models import ColumnDataSource, HoverTool
 
-
-
+url = 'http://54.203.148.173:5006'
 data = pd.read_csv('app_db.csv')
 ratios = {}
 df_hit_rate = pd.read_csv('hits_over_searches.csv').rename(columns=lambda x: x+"_hit_rate")
@@ -166,7 +165,7 @@ def input():
 
   curdoc().add_root(plot)
   session = push_session(curdoc())
-  bokeh_script = autoload_server(plot, session_id=session.id)
+  bokeh_script = autoload_server(plot, session_id=session.id, url=url)
   bokeh_id = bokeh_script.split()[2].split('"')[1]
   print "script:"
   print bokeh_script
@@ -295,7 +294,7 @@ def output():
 
 	  curdoc().add_root(plot1)
 	  session = push_session(curdoc())
-	  bokeh_script_rates_measured = autoload_server(plot1, session_id=session.id)
+	  bokeh_script_rates_measured = autoload_server(plot1, session_id=session.id, url=url)
 	  print bokeh_script_rates_measured
 
   hover2 = HoverTool( tooltips=[ ('Agency','<font color="#000000"> @agency, @city, @state</font>')])
@@ -309,7 +308,7 @@ def output():
 
   curdoc().add_root(plot2)
   session = push_session(curdoc())
-  bokeh_script_about = autoload_server(plot2, session_id=session.id)
+  bokeh_script_about = autoload_server(plot2, session_id=session.id, url=url)
   print bokeh_script_about
 
   do_display = ""
